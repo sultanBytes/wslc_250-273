@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: olive;
+        }
+        .container{
+            padding: 10px;
+        }
+        .container > h1{
+            text-align: center;
+            padding: 10px;
+            color: white;
+            text-decoration: underline;
+        }
+
+        .product-container{
+            display: grid;
+            grid-template-columns: 2fr 6fr;
+        }
+        
+        /* .product-container div{
+            border: 1px solid;
+        } */
+
+        .cards{
+            display: grid;
+            padding: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            
+        }
+
+        img{
+            width: 100%;
+            height: 100%;
+        }
+
+        .card{
+            background-color: whitesmoke;
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 10px;
+        }
+        .card h2{
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .card p{
+            font-size: 17px;
+            font-weight: 500;
+            padding: 8px 0;
+        }
+
+        .card div{
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .card div span:nth-child(2){
+            color: grey;
+            text-decoration: line-through;
+        }
+
+        .card div span:nth-child(3){
+            font-size: 18px;
+        }
+        .card div:last-child{
+            margin-top: 10px;
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .card div:last-child button{
+            padding: 8px ;
+        }
+
+        .pagination{
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .pagination button{
+            background-color: black;
+            color: white;
+            cursor: pointer;
+            border: 1px solid black;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 8px 10px;
+            margin: 0 4px;
+            border-radius: 4px;
+        }
+
+        .pagination button:hover{
+            background-color: white;
+            color: black;
+        }
+
+        .activeBtn{
+            background-color: white !important;
+            color: black !important;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Products</h1>
+
+        <div class="product-container">
+            <div class="categories"></div>
+            <div class="cards">
+                <!-- <div class="card">
+                    <figure class="thumbnail">
+                        <img src="https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/thumbnail.png" alt="">
+                    </figure>
+                    <h2>Essence Mascara Lash Princess</h2>
+                    <p>
+                        The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.
+                    </p>
+                    <div>
+                        <span>Price : $</span> <span>1000</span> <span>920</span>
+                    </div>
+                    <div>
+                        <button>Details</button>
+                        <button>Add to Cart</button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="pagination">
+
+        </div>
+    </div>
+
+    <script>
+        const cardContainer = document.querySelector('.cards');
+        const paginationContainer = document.querySelector('.pagination');
+       
+
+        let start = 0;
+        let limit = 12;
+        let currentPage = 1;
+
+        const url = `https://dummyjson.com/products?limit=${limit}&skip=${start}`;
+
+        const showData = (products)=>{
+
+            let allData = '';
+            products.forEach((product)=>{
+                allData += `<div class="card">
+                    <figure class="thumbnail">
+                        <img src="${product.thumbnail}" alt="">
+                    </figure>
+                    <h2>${product.title}</h2>
+                    <p>
+                       ${product.description}
+                    </p>
+                    <div>
+                        <span>Price : $</span> <span>1000</span> <span>${product.price}</span>
+                    </div>
+                    <div>
+                        <button>Details</button>
+                        <button>Add to Cart</button>
+                    </div>
+                </div>`;
+            });
+
+            cardContainer.innerHTML = allData;
+        };
+
+        const fetchData = async()=>{
+            const response = await fetch(url);
+
+           if(response.status === 200){
+           const actualData = await response.json();
+
+           showData(actualData.products);
+
+           const totalPages = Math.ceil(actualData.total / limit);
+
+           console.log(totalPages);
+           console.log(actualData);
+
+           let totalBtns = '';
+           for(let i = 1; i <= totalPages; i++){
+            if(i === currentPage){
+                totalBtns += `<button class="activeBtn">${i}</button>`;
+            }else{
+                totalBtns += `<button>${i}</button>`;
+            }
+            
+           }
+
+           paginationContainer.innerHTML = totalBtns;
+           }
+           else{
+            alert('Something went wrong')
+           }
+        };
+
+        fetchData();
+
+    
+    </script>
+</body>
+</html>
