@@ -1,97 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        body{
+
+        body {
             background-color: olive;
         }
-        .container{
+
+        .container {
             padding: 10px;
         }
-        .container > h1{
+
+        .container>h1 {
             text-align: center;
             padding: 10px;
             color: white;
             text-decoration: underline;
         }
 
-        .product-container{
+        .product-container {
             display: grid;
             grid-template-columns: 2fr 6fr;
         }
-        
+
         /* .product-container div{
             border: 1px solid;
         } */
 
-        .cards{
+        .cards {
             display: grid;
             padding: 10px;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            
+
         }
 
-        img{
+        img {
             width: 100%;
             height: 100%;
         }
 
-        .card{
+        .card {
             background-color: whitesmoke;
             border-radius: 8px;
             overflow: hidden;
             padding: 10px;
         }
-        .card h2{
+
+        .card h2 {
             font-size: 18px;
             font-weight: 700;
         }
 
-        .card p{
+        .card p {
             font-size: 17px;
             font-weight: 500;
             padding: 8px 0;
         }
 
-        .card div{
+        .card div {
             font-size: 17px;
             font-weight: 500;
         }
 
-        .card div span:nth-child(2){
+        .card div span:nth-child(2) {
             color: grey;
             text-decoration: line-through;
         }
 
-        .card div span:nth-child(3){
+        .card div span:nth-child(3) {
             font-size: 18px;
         }
-        .card div:last-child{
+
+        .card div:last-child {
             margin-top: 10px;
-            display:grid;
+            display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
-        .card div:last-child button{
-            padding: 8px ;
+        .card div:last-child button {
+            padding: 8px;
         }
 
-        .pagination{
+        .pagination {
             text-align: center;
             padding: 20px 0;
         }
 
-        .pagination button{
+        .pagination button {
             background-color: black;
             color: white;
             cursor: pointer;
@@ -103,24 +109,30 @@
             border-radius: 4px;
         }
 
-        .pagination button:hover{
+        .pagination button:hover {
             background-color: white;
             color: black;
         }
 
-        .activeBtn{
+        .activeBtn {
             background-color: white !important;
             color: black !important;
-            
+
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Products</h1>
 
         <div class="product-container">
-            <div class="categories"></div>
+            <div class="categories">
+                <h2>Category</h2>
+                <ul class="category-box">
+
+                </ul>
+            </div>
             <div class="cards">
                 <!-- <div class="card">
                     <figure class="thumbnail">
@@ -148,18 +160,26 @@
     <script>
         const cardContainer = document.querySelector('.cards');
         const paginationContainer = document.querySelector('.pagination');
-       
+        const catBox = document.querySelector('.category-box');
 
-        let start = 0;
+        let allApiData;
+        fetch('https://dummyjson.com/products?limit=194')
+            .then(res => res.json())
+            .then((data)=>{
+                allApiData = data.products
+            });
+
+
+        // let start = 0;
         let limit = 12;
         let currentPage = 1;
 
-        const url = `https://dummyjson.com/products?limit=${limit}&skip=${start}`;
+        const url = `https://dummyjson.com/products?limit=${limit}&skip=${(currentPage - 1) * limit}`;
 
-        const showData = (products)=>{
+        const showData = (products) => {
 
             let allData = '';
-            products.forEach((product)=>{
+            products.forEach((product) => {
                 allData += `<div class="card">
                     <figure class="thumbnail">
                         <img src="${product.thumbnail}" alt="">
@@ -181,39 +201,125 @@
             cardContainer.innerHTML = allData;
         };
 
-        const fetchData = async()=>{
-            const response = await fetch(url);
+        const fetchData = async (apiUrl) => {
+            const response = await fetch(apiUrl);
 
-           if(response.status === 200){
-           const actualData = await response.json();
+            if (response.status === 200) {
+                const actualData = await response.json();
 
-           showData(actualData.products);
+                //    console.log(actualData.products);
 
-           const totalPages = Math.ceil(actualData.total / limit);
+                showData(actualData.products);
 
-           console.log(totalPages);
-           console.log(actualData);
+                const totalPages = Math.ceil(actualData.total / limit);
 
-           let totalBtns = '';
-           for(let i = 1; i <= totalPages; i++){
-            if(i === currentPage){
-                totalBtns += `<button class="activeBtn">${i}</button>`;
-            }else{
-                totalBtns += `<button>${i}</button>`;
+                //    console.log(totalPages);
+                //    console.log(actualData);
+
+                let totalBtns = '';
+
+                totalBtns += `<button value="-1">Prev</button>`;
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === currentPage) {
+                        totalBtns += `<button class="activeBtn" value="${i}">${i}</button>`;
+                    } else {
+                        totalBtns += `<button value="${i}">${i}</button>`;
+                    }
+
+                }
+
+                totalBtns += `<button value="+1">Next</button>`;
+
+                paginationContainer.innerHTML = totalBtns;
+
+                const allPageBtn = document.querySelectorAll('.pagination button');
+                allPageBtn.forEach((btn) => {
+                    btn.addEventListener('click', () => {
+
+                        if (btn.value == '-1') {
+                            currentPage--;
+                        }
+                        else if (btn.value == '+1') {
+                            currentPage++;
+                        }
+                        else {
+                            currentPage = Number(btn.value);
+                        }
+
+
+                        if (currentPage <= 1) {
+                            allPageBtn[0].disabled = true;
+                            currentPage = 1;
+                        }
+
+
+                        if (currentPage >= totalPages) {
+                            allPageBtn[allPageBtn.length - 1].disabled = true;
+                            currentPage = totalPages;
+                        }
+
+                        fetchData(`https://dummyjson.com/products?limit=${limit}&skip=${(currentPage - 1) * limit}`);
+                    })
+                })
+
+                //    console.log(allPageBtn);
             }
-            
-           }
-
-           paginationContainer.innerHTML = totalBtns;
-           }
-           else{
-            alert('Something went wrong')
-           }
+            else {
+                alert('Something went wrong')
+            }
         };
 
-        fetchData();
+        fetchData(url);
 
-    
+        const showCats = async () => {
+            let checkedCats;
+
+            const catResponse = await fetch('https://dummyjson.com/products/categories');
+            const actualCategories = await catResponse.json();
+
+            let allCategories = '';
+            actualCategories.forEach((category) => {
+                allCategories += `<li>
+                <input type="checkbox" value="${category.name}" />
+                <span>${category.name}</span>
+                </li>`;
+            });
+
+            catBox.innerHTML = allCategories;
+
+            const allCheckBoxes = document.querySelectorAll('.category-box li input[type="checkbox"]');
+
+
+
+            allCheckBoxes.forEach((inp) => {
+                inp.addEventListener('click', (e) => {
+                    // console.log(e.target.checked);
+
+                    checkedCats = [];
+
+                    allCheckBoxes.forEach((v) => {
+
+                        if (v.checked) {
+                            checkedCats.push(v.value.toLowerCase());
+                        }
+                    });
+
+
+
+                    console.log(checkedCats);
+
+                    // allApiData ****************
+                });
+            });
+
+
+
+        };
+
+        showCats();
+
+
     </script>
 </body>
+
 </html>
