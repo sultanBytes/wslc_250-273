@@ -119,6 +119,27 @@
             color: black !important;
 
         }
+
+        .product-details {
+            position: fixed;
+            left: 50%;
+            top: -50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            width: 600px;
+            height: 500px;
+            transition: 0.2s;
+        }
+
+        .details-overlay {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.416);
+            display: none;
+        }
     </style>
 </head>
 
@@ -155,17 +176,21 @@
         <div class="pagination">
 
         </div>
+        <div class="details-overlay"></div>
+        <div class="product-details"></div>
     </div>
 
     <script>
         const cardContainer = document.querySelector('.cards');
         const paginationContainer = document.querySelector('.pagination');
         const catBox = document.querySelector('.category-box');
+        const detailsOverlay = document.querySelector('.details-overlay');
+        const productDetails = document.querySelector('.product-details');
 
         let allApiData;
         fetch('https://dummyjson.com/products?limit=194')
             .then(res => res.json())
-            .then((data)=>{
+            .then((data) => {
                 allApiData = data.products
             });
 
@@ -176,10 +201,64 @@
 
         const url = `https://dummyjson.com/products?limit=${limit}&skip=${(currentPage - 1) * limit}`;
 
+        const pagination = (totalProduct) => {
+            const totalPages = Math.ceil(totalProduct / limit);
+
+            let totalBtns = '';
+
+            totalBtns += `<button value="-1">Prev</button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    totalBtns += `<button class="activeBtn" value="${i}">${i}</button>`;
+                } else {
+                    totalBtns += `<button value="${i}">${i}</button>`;
+                }
+
+            }
+
+            totalBtns += `<button value="+1">Next</button>`;
+
+            paginationContainer.innerHTML = totalBtns;
+
+            const allPageBtn = document.querySelectorAll('.pagination button');
+            allPageBtn.forEach((btn) => {
+                btn.addEventListener('click', () => {
+
+                    if (btn.value == '-1') {
+                        currentPage--;
+                    }
+                    else if (btn.value == '+1') {
+                        currentPage++;
+                    }
+                    else {
+                        currentPage = Number(btn.value);
+                    }
+
+
+                    if (currentPage <= 1) {
+                        allPageBtn[0].disabled = true;
+                        currentPage = 1;
+                    }
+
+
+                    if (currentPage >= totalPages) {
+                        allPageBtn[allPageBtn.length - 1].disabled = true;
+                        currentPage = totalPages;
+                    }
+
+                    fetchData(`https://dummyjson.com/products?limit=${limit}&skip=${(currentPage - 1) * limit}`);
+                })
+            })
+        }
+
         const showData = (products) => {
 
+
+
+            pagination(products.length)
+
             let allData = '';
-            products.forEach((product) => {
+            products.forEach((product, pIndex) => {
                 allData += `<div class="card">
                     <figure class="thumbnail">
                         <img src="${product.thumbnail}" alt="">
@@ -192,14 +271,52 @@
                         <span>Price : $</span> <span>1000</span> <span>${product.price}</span>
                     </div>
                     <div>
-                        <button>Details</button>
-                        <button>Add to Cart</button>
+                        <button id="detailsBtn" value="${pIndex}">Details</button>
+                        <button id="addToCartBtn" value="${pIndex}">Add to Cart</button>
                     </div>
                 </div>`;
             });
 
             cardContainer.innerHTML = allData;
+
+            const alldetailsBtn = document.querySelectorAll('#detailsBtn');
+
+            alldetailsBtn.forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+
+                    detailsOverlay.style.display = 'block';
+                    productDetails.style.top = '50%';
+                    console.log(products[e.target.value]);
+                })
+            });
+
+            const alladdToCartBtn = document.querySelectorAll('#addToCartBtn');
+
+            alladdToCartBtn.forEach((btn)=>{
+                btn.addEventListener('click', (e)=>{
+                    console.log(products[e.target.value]);
+
+                    const cartData = JSON.parse(localStorage.getItem('cart_wslc_250_273')) || [];
+
+                    const cartObj = {
+                        id: products[e.target.value].id,
+                        product: products[e.target.value],
+                        quentity: 1
+                    };
+
+                    cartData.push(cartObj);
+
+
+
+                    localStorage.setItem('cart_wslc_250_273', JSON.stringify(cartData));
+                });
+            })
         };
+
+        detailsOverlay.addEventListener('click', () => {
+            detailsOverlay.style.display = 'none';
+            productDetails.style.top = '-50%';
+        })
 
         const fetchData = async (apiUrl) => {
             const response = await fetch(apiUrl);
@@ -207,60 +324,11 @@
             if (response.status === 200) {
                 const actualData = await response.json();
 
-                //    console.log(actualData.products);
 
                 showData(actualData.products);
-
-                const totalPages = Math.ceil(actualData.total / limit);
-
-                //    console.log(totalPages);
-                //    console.log(actualData);
-
-                let totalBtns = '';
-
-                totalBtns += `<button value="-1">Prev</button>`;
-                for (let i = 1; i <= totalPages; i++) {
-                    if (i === currentPage) {
-                        totalBtns += `<button class="activeBtn" value="${i}">${i}</button>`;
-                    } else {
-                        totalBtns += `<button value="${i}">${i}</button>`;
-                    }
-
-                }
-
-                totalBtns += `<button value="+1">Next</button>`;
-
-                paginationContainer.innerHTML = totalBtns;
-
-                const allPageBtn = document.querySelectorAll('.pagination button');
-                allPageBtn.forEach((btn) => {
-                    btn.addEventListener('click', () => {
-
-                        if (btn.value == '-1') {
-                            currentPage--;
-                        }
-                        else if (btn.value == '+1') {
-                            currentPage++;
-                        }
-                        else {
-                            currentPage = Number(btn.value);
-                        }
+                pagination(actualData.total);
 
 
-                        if (currentPage <= 1) {
-                            allPageBtn[0].disabled = true;
-                            currentPage = 1;
-                        }
-
-
-                        if (currentPage >= totalPages) {
-                            allPageBtn[allPageBtn.length - 1].disabled = true;
-                            currentPage = totalPages;
-                        }
-
-                        fetchData(`https://dummyjson.com/products?limit=${limit}&skip=${(currentPage - 1) * limit}`);
-                    })
-                })
 
                 //    console.log(allPageBtn);
             }
@@ -279,8 +347,10 @@
 
             let allCategories = '';
             actualCategories.forEach((category) => {
+                // console.log(category);
+
                 allCategories += `<li>
-                <input type="checkbox" value="${category.name}" />
+                <input type="checkbox" value="${category.slug}" />
                 <span>${category.name}</span>
                 </li>`;
             });
@@ -300,15 +370,21 @@
                     allCheckBoxes.forEach((v) => {
 
                         if (v.checked) {
-                            checkedCats.push(v.value.toLowerCase());
+                            checkedCats.push(v.value);
                         }
                     });
 
 
+                    const checkedData = allApiData.filter((singledata) => checkedCats.includes(singledata.category));
 
-                    console.log(checkedCats);
+                    if (checkedCats.length === 0) {
+                        showData(allApiData)
+                    } else {
+                        showData(checkedData);
+                    }
 
-                    // allApiData ****************
+
+
                 });
             });
 
