@@ -292,19 +292,30 @@
 
             const alladdToCartBtn = document.querySelectorAll('#addToCartBtn');
 
-            alladdToCartBtn.forEach((btn)=>{
-                btn.addEventListener('click', (e)=>{
-                    console.log(products[e.target.value]);
+            alladdToCartBtn.forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    const currentId = products[e.target.value].id;
 
                     const cartData = JSON.parse(localStorage.getItem('cart_wslc_250_273')) || [];
 
-                    const cartObj = {
-                        id: products[e.target.value].id,
-                        product: products[e.target.value],
-                        quentity: 1
-                    };
+                    const productIndex = cartData.findIndex((p_data) => p_data.id == currentId);
 
-                    cartData.push(cartObj);
+                    // console.log(productIndex);
+
+                    if (productIndex === -1) {
+                        const cartObj = {
+                            id: products[e.target.value].id,
+                            product: products[e.target.value],
+                            quentity: 1
+                        };
+
+                        cartData.push(cartObj);
+                    }
+                    else{
+                        cartData[productIndex].quentity++;
+                    }
+
+
 
 
 
