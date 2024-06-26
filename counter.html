@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .counters{
+            max-width: 1000px;
+            margin: auto;
+            background-color: olive;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+
+        .counter-card{
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .counter{
+            font-size: 30px;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="counters">
+        <div class="counter-card">
+            <div class="counter" data-count="8">0</div>
+            <div>+ Years Of Experience</div>
+        </div>
+        <div class="counter-card">
+            <div class="counter" data-count="8554">0</div>
+            <div>Happy Customers</div>
+        </div>
+        <div class="counter-card">
+            <div class="counter" data-count="821">0</div>
+            <div>Homes Relocated</div>
+        </div>
+        <div class="counter-card">
+            <div class="counter" data-count="535">0</div>
+            <div>Four Wheelers Relocated</div>
+        </div>
+        <div class="counter-card">
+            <div class="counter" data-count="1982">0</div>
+            <div>Two Wheelers Relocated</div>
+        </div>
+        <div class="counter-card">
+            <div class="counter" data-count="199">0</div>
+            <div>Offices Relocated</div>
+        </div>
+    </div>
+
+    <script>
+        const counters = document.querySelectorAll('.counter');
+        const duration = 2000;
+        let maxCount = 0;
+
+        const runCounter = ()=>{
+            counters.forEach((counter)=>{
+            const targetCount = parseInt(counter.dataset.count);
+            const increament = Math.ceil(targetCount / (duration / 50));
+
+           const updateCounter =()=>{
+            let currentCount = parseInt(counter.textContent);
+
+            if(currentCount < targetCount){
+                currentCount += increament;
+                if(currentCount > targetCount){
+                    currentCount = targetCount;
+                }
+
+                counter.textContent = currentCount;
+
+                setTimeout(updateCounter, 50);
+
+                // updateCounter();
+            }
+            else{
+                counter.textContent = targetCount;
+            }
+           };
+
+           updateCounter();
+
+            
+        })
+        };
+
+        // runCounter();
+
+        document.addEventListener('DOMContentLoaded', runCounter);
+    </script>
+</body>
+</html>
+
+<!-- 0 to 100   - 100sec (1sec = +1)
+0 to 1000  - 100sec (1sec = +10)
+0 to 10000 - 100sec (1sec = +100) -->

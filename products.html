@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         * {
             margin: 0;
@@ -140,10 +141,55 @@
             background-color: rgba(0, 0, 0, 0.416);
             display: none;
         }
+
+        header{
+            position: sticky;
+            top: 0;
+            left: 0;
+            background-color: white;
+        }
+        header div{
+            display: flex;
+            justify-content: end;
+            padding: 20px;
+            font-size: 30px;
+        }
+
+        header div span{
+            cursor: pointer;
+        }
+
+        .cart{
+            width: 600px;
+            height: 100vh;
+            overflow-y: scroll;
+            background-color: white;
+            position: fixed;
+            top: 0;
+            right: -50%;
+            transition: 0.2s;
+        }
+
+        .cart span{
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
+    <header>
+        <div>
+            <span><i class="fa-solid fa-cart-shopping"></i><sup>1</sup></span>
+        </div>
+    </header>
+    <div class="cart">
+        <span>&times;</span>
+    </div>
     <div class="container">
         <h1>Products</h1>
 
@@ -186,6 +232,29 @@
         const catBox = document.querySelector('.category-box');
         const detailsOverlay = document.querySelector('.details-overlay');
         const productDetails = document.querySelector('.product-details');
+        const cartQ = document.querySelector('header sup');
+        const cartContainer = document.querySelector('.cart');
+        const cartBtn = document.querySelector('header span');
+        const cartCloseBtn = document.querySelector('.cart span');
+
+        cartBtn.addEventListener('click', ()=>{
+            cartContainer.style.right = '0';
+        });
+
+        cartCloseBtn.addEventListener('click', ()=>{
+            cartContainer.style.right = '-50%';
+        })
+
+        const getCartProduct = ()=>{
+            const cartData = JSON.parse(localStorage.getItem('cart_wslc_250_273')) || [];
+            let cartQuentity = 0;
+
+            cartData.forEach((cartP)=>{
+                cartQuentity += cartP.quentity;
+            });
+            cartQ.innerHTML = cartQuentity;
+        };
+        getCartProduct();
 
         let allApiData;
         fetch('https://dummyjson.com/products?limit=194')
@@ -320,6 +389,7 @@
 
 
                     localStorage.setItem('cart_wslc_250_273', JSON.stringify(cartData));
+                    getCartProduct();
                 });
             })
         };
