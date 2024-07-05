@@ -1,19 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <style type="text/css">
+        div{
+            border: 1px solid;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    
-    <script>
-        console.log(1);
-        setTimeout(()=>{
-            console.log(2);
-        }, 0)
+    <input type="text" name="" id="inp1">
+    <div id="d1"></div>
+    <div id="d2"></div>
+    <input type="text" readonly id="inp2" />
 
-        console.log(3);
+    <button id="btn">Click me</button>
+
+    <script type="text/javascript">
+        let a = 'hello';
+        const inp1 = document.querySelector('#inp1');
+        const d1 = document.querySelector('#d1');
+        const d2 = document.querySelector('#d2');
+        const inp2 = document.querySelector('#inp2');
+        
+
+        const changeValue = ()=>{
+            inp1.value = a;
+            inp2.value = a;
+            d1.innerHTML = a;
+            d2.innerHTML = a;
+        }
+
+        changeValue();
+
+        document.querySelector('#btn').addEventListener('click',()=>{
+            a = inp1.value;
+
+            changeValue();
+        })
+
     </script>
 </body>
 </html>

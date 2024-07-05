@@ -1,0 +1,19 @@
+*{
+  box-sizing: border-box;
+}
+body{
+  background-color: antiquewhite;
+}
+form{
+  width: 600px;
+  padding: 20px;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+input{
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+}
