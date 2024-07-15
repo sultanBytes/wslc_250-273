@@ -1,0 +1,12 @@
+<svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.5 12.333H9.16667C9.9 12.333 10.5 11.733 10.5 10.9997V4.33301H4.5C3.5 4.33301 2.62667 4.88633 2.17334 5.69967" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.8335 14.333C1.8335 15.4397 2.72683 16.333 3.8335 16.333H4.50016C4.50016 15.5997 5.10016 14.9997 5.8335 14.9997C6.56683 14.9997 7.16683 15.5997 7.16683 16.333H9.8335C9.8335 15.5997 10.4335 14.9997 11.1668 14.9997C11.9002 14.9997 12.5002 15.5997 12.5002 16.333H13.1668C14.2735 16.333 15.1668 15.4397 15.1668 14.333V12.333H13.1668C12.8002 12.333 12.5002 12.033 12.5002 11.6663V9.66634C12.5002 9.29967 12.8002 8.99967 13.1668 8.99967H14.0268L12.8868 7.00635C12.6468 6.59301 12.2068 6.33301 11.7268 6.33301H10.5002V10.9997C10.5002 11.733 9.90016 12.333 9.16683 12.333H8.50016" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.83333 17.6667C6.56971 17.6667 7.16667 17.0697 7.16667 16.3333C7.16667 15.597 6.56971 15 5.83333 15C5.09695 15 4.5 15.597 4.5 16.3333C4.5 17.0697 5.09695 17.6667 5.83333 17.6667Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.1668 17.6667C11.9032 17.6667 12.5002 17.0697 12.5002 16.3333C12.5002 15.597 11.9032 15 11.1668 15C10.4304 15 9.8335 15.597 9.8335 16.3333C9.8335 17.0697 10.4304 17.6667 11.1668 17.6667Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.1667 11V12.3333H13.1667C12.8 12.3333 12.5 12.0333 12.5 11.6667V9.66667C12.5 9.3 12.8 9 13.1667 9H14.0267L15.1667 11Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.8335 8.33301H5.8335" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.8335 10.333H4.50016" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.8335 12.333H3.16683" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="15.5" width="1.5" height="8" rx="0.75" fill="white"/>
+<rect x="12.5" y="5" width="1.5" height="8" rx="0.75" transform="rotate(-90 12.5 5)" fill="white"/>
+</svg>
