@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../common-components/Header';
 import innerImg from './../../assets/images/collections-no-bg.png';
 import "slick-carousel/slick/slick.css";
@@ -12,9 +12,420 @@ import slideImg2 from './../../assets/images/deliveryPackageBanner.jpg';
 import slideImg3 from './../../assets/images/500+Coupon+Banner.png';
 import slideImg4 from './../../assets/images/Low+Price+Challenge+Banner.png';
 
+import tabImg1 from './../../assets/images/elctricals1.svg';
+import tabImg2 from './../../assets/images/elctricals2.svg';
+import tabImg3 from './../../assets/images/elctricals3.svg';
+import tabImg4 from './../../assets/images/elctricals4.svg';
+import tabImg5 from './../../assets/images/elctricals5.svg';
+import tabImg6 from './../../assets/images/elctricals6.svg';
+import tabImg7 from './../../assets/images/elctricals7.svg';
+import tabImg8 from './../../assets/images/elctricals8.svg';
+
+
 
 const Home = () => {
     const [sliderVelocity, setVelocity] = useState(100);
+    const [activeTabCat, setTabCat] = useState('electricals');
+    const [tabItems, setTabItems] = useState([]);
+
+    const tabContent = [
+        {
+            title:'electricals',
+            img:tabImg1
+        },
+        {
+            title:'electricals',
+            img:tabImg1
+        },
+        {
+            title:'electricals',
+            img:tabImg1
+        },
+        {
+            title:'electricals',
+            img:tabImg1
+        },
+        {
+            title:'electricals',
+            img:tabImg1
+        },
+        {
+            title:'electricals',
+            img:tabImg1
+        },
+        {
+            title:'electricals',
+            img:tabImg2
+        },
+        {
+            title:'electricals',
+            img:tabImg2
+        },
+        {
+            title:'electricals',
+            img:tabImg2
+        },
+        {
+            title:'electricals',
+            img:tabImg2
+        },
+        {
+            title:'electricals',
+            img:tabImg2
+        },
+        {
+            title:'electricals',
+            img:tabImg2
+        },
+        {
+            title:'electricals',
+            img:tabImg2
+        },
+        {
+            title:'electricals',
+            img:tabImg1
+        },
+        {
+            title:'electricals',
+            img:tabImg1
+        },
+        {
+            title:'paints',
+            img:tabImg3
+        },
+        {
+            title:'paints',
+            img:tabImg4
+        },
+        {
+            title:'paints',
+            img:tabImg3
+        },
+        {
+            title:'paints',
+            img:tabImg4
+        },
+        {
+            title:'paints',
+            img:tabImg3
+        },
+        {
+            title:'paints',
+            img:tabImg4
+        },
+        {
+            title:'paints',
+            img:tabImg3
+        },
+        {
+            title:'paints',
+            img:tabImg4
+        },
+        {
+            title:'paints',
+            img:tabImg3
+        },
+        {
+            title:'paints',
+            img:tabImg4
+        },
+        {
+            title:'paints',
+            img:tabImg3
+        },
+        {
+            title:'paints',
+            img:tabImg4
+        },
+        {
+            title:'paints',
+            img:tabImg3
+        },
+        {
+            title:'paints',
+            img:tabImg4
+        },
+        {
+            title:'paints',
+            img:tabImg3
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'wood',
+            img:tabImg6
+        },
+        {
+            title:'wood',
+            img:tabImg5
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        },
+        {
+            title:'hardware',
+            img:tabImg7
+        },
+        {
+            title:'hardware',
+            img:tabImg8
+        }
+        
+    ];
+
+    useEffect(()=>{
+        const data = tabContent.filter((item)=> item.title === activeTabCat);
+        setTabItems(data);
+
+        // console.log(data);
+    },[activeTabCat]);
 
     let slider1 = {
         accessibility: true,
@@ -95,7 +506,7 @@ const Home = () => {
                     <Marquee velocity={sliderVelocity} minScale={0.7} resetAfterTries={200} direction='rtl'>
                         {times(1, Number).map((id) => (
                            
-                                <div>
+                                <div style={{backgroundColor:'grey'}}>
                                     Decorative Wall Panels | Louvers | Modular Hardware & Accessories | Laminates | Flooring Solutions | Invisible Grille
                                 </div>
                            
@@ -103,6 +514,30 @@ const Home = () => {
                     </Marquee>
                 </div>;
             </div>
+
+            <div className='container-fluid'>
+                <div className='container border rounded-3 p-4'>
+                        <h1>Trusted by <span className='text-danger'> 75+ Brands</span></h1>
+                        <div className='tab-head py-3'>
+                            <button className={`rounded-pill fw-semibold border border-dark-subtle py-2 px-4 me-3 ${(activeTabCat === 'electricals') ? 'active-tab-btn' : ''}`}
+                            onClick={()=>{setTabCat('electricals')}}>Electricals</button>
+                            <button className={`rounded-pill fw-semibold border border-dark-subtle py-2 px-4 me-3 ${(activeTabCat === 'paints') ? 'active-tab-btn' : ''}`}  onClick={()=>{setTabCat('paints')}}>Paints</button>
+                            <button className={`rounded-pill fw-semibold border border-dark-subtle py-2 px-4 me-3 ${(activeTabCat === 'wood') ? 'active-tab-btn' : ''}`} onClick={()=>{setTabCat('wood')}}>Wood Materials</button>
+                            <button className={`rounded-pill fw-semibold border border-dark-subtle py-2 px-4 me-3 ${(activeTabCat === 'hardware') ? 'active-tab-btn' : ''}`} onClick={()=>{setTabCat('hardware')}}>Hardware & Plumbing</button>
+                        </div>
+                        <div className='tab-body'>
+                            {
+                                tabItems.map((tabdata)=>(
+                                    <div className='p-3 border bg-white rounded'>
+                                        <img src={tabdata.img} />
+                                    </div>
+                                ))
+                            }
+                        </div>
+                </div>
+            </div>
+
+            <div style={{height:'50vh'}}></div>
         </div>
     )
 }

@@ -89,3 +89,33 @@ img{
   font-weight: 400;
   line-height: 10px;
 }
+.tab-head button{
+  background-color: white;
+}
+.tab-head button:hover{
+  background-color: black !important;
+  color: white !important;
+}
+
+.active-tab-btn{
+  background-color: black !important;
+  color: white !important;
+}
+
+.tab-body{
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 20px;
+  padding: 16px;
+}
+
+/* .tab-body div{
+  padding: ;
+} */
+
+
+.slick-dots > li > button::before{
+  content: '' !important;
+  background-color: black;
+  height: 4px !important;
+}
