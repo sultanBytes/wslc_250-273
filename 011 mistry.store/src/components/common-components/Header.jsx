@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -9,8 +9,37 @@ import { LiaLanguageSolid } from 'react-icons/lia';
 import { BiPhoneCall } from 'react-icons/bi';
 
 const Header = () => {
+
+  const [scrollVal, setScrollVal] = useState(null);
+  const [transition, setTransition] = useState('0s');
+
+  useEffect(()=>{
+
+    const handleSroll = ()=>{
+
+      if(window.scrollY > 500){
+        setTransition('0.4s');
+        setScrollVal('0px')
+      }
+      else{
+        setScrollVal(`${-window.scrollY}px`);
+        setTransition('0s');
+      }
+      console.log(window.scrollY);
+    }
+
+    window.addEventListener('scroll', handleSroll)
+
+  },[]);
   return (
-    <Navbar expand="lg" className="bg-white ">
+    <Navbar expand="lg" className="bg-white "
+    style={{
+      position:'sticky',
+      zIndex:'9999',
+      transition:transition,
+      top:scrollVal
+    }}
+    >
     <Container fluid className='px-2'>
       <Navbar.Brand href="/">
       <img src={logo} style={{width:'215px'}}/>
