@@ -8,40 +8,93 @@ import 'react-responsive-pagination/themes/classic.css';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
+    const [dataToShow, setDataToShow] = useState([]);
+    const [dataByPage, setDataByPage] = useState([]);
     const [open, setOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [allCats, setCats] = useState([]);
     const [activeCategory, setActiveCategory] = useState('all');
+    const [min, setMin] = useState(null);
+    const [max, setMax] = useState(null);
+    const [userMax, setUserMax] = useState(1000);
+    const [currentProduct, setCurrentProduct] = useState({});
+    
 
-    const onOpenModal = (index) => setOpen(true);
+    
     const onCloseModal = () => setOpen(false);
 
     const getData = async () => {
-        let url = `https://dummyjson.com/products?limit=12&skip=${(currentPage - 1) * 12}`;
+        // let url = `https://dummyjson.com/products?limit=12&skip=${(currentPage - 1) * 12}`;
 
-        if(activeCategory !== 'all') url = `https://dummyjson.com/products/category/${activeCategory}?limit=12&skip=${(currentPage - 1) * 12}`;
+        // if (activeCategory !== 'all') url = `https://dummyjson.com/products/category/${activeCategory}?limit=12&skip=${(currentPage - 1) * 12}`;
 
+        let url = 'https://dummyjson.com/products?limit=194';
+
+        if(activeCategory !== 'all') url = `https://dummyjson.com/products/category/${activeCategory}`
         axios.get(url)
             .then((response) => {
                 if (response.status !== 200) return alert('something went wrong');
 
-                setTotalPages(Math.ceil(response.data.total / 12));
+                
                 setProducts(response.data.products)
+
+                // console.log(response.data.products);
+
+                let minPrice = Infinity;
+                let maxPrice = -Infinity;
+                response.data.products.forEach((product) => {
+                    if (product.price < minPrice) {
+                        minPrice = product.price;
+                    }
+
+                    if (product.price > maxPrice) {
+                        maxPrice = product.price;
+                    }
+                })
+
+                setMin(minPrice);
+                setMax(maxPrice);
+                setUserMax(maxPrice)
             })
     };
 
 
-    useEffect(() => { getData() }, [currentPage, activeCategory]);
+
+
+    useEffect(() => { getData() }, [activeCategory]);
+
+    const filterDataByPrice = ()=>{
+        const filteredData = products.filter((product)=> product.price <= userMax);
+        setTotalPages(Math.ceil(filteredData.length / 12));
+
+        setDataToShow(filteredData);
+    }
+
+    useEffect(()=>{
+        filterDataByPrice();
+    },[userMax, products]);
+
+    useEffect(()=>{
+        let start = (currentPage - 1) * 12;
+        setDataByPage(dataToShow.slice(start,  start + 11));
+    },[currentPage, activeCategory, userMax, dataToShow])
 
     useEffect(() => {
         axios.get('https://dummyjson.com/products/categories')
             .then((response) => {
                 if (response.status !== 200) return alert('something went wrong');
-                console.log(response.data);
                 setCats(response.data);
             })
     }, []);
+
+    const onOpenModal = (index) => {
+        console.log(dataByPage[index]);
+        setCurrentProduct(dataByPage[index]);
+        setOpen(true);
+    }
+
+
     return (
         <>
 
@@ -57,13 +110,22 @@ const Home = () => {
                     <div>
                         <h3 style={{
                             lineHeight: '16px'
+                        }}>Maximum price</h3>
+                        <div>
+                            <input type='range' max={max} min={min} value={userMax} onChange={(e)=>{setUserMax(e.target.value); setCurrentPage(1)}}/>
+                            <div>
+                                <spna>Maximum price : {userMax}</spna>
+                            </div>
+                        </div>
+                        <h3 style={{
+                            lineHeight: '16px'
                         }}>Category</h3>
                         <ul style={{
                             listStyle: 'none',
                             padding: '0'
                         }}>
                             <li key={-1}
-                                onClick={()=>{setActiveCategory('all'); setCurrentPage(1)}}
+                                onClick={() => { setActiveCategory('all'); setCurrentPage(1) }}
                                 style={{
                                     padding: '6px',
                                     margin: '2px 0',
@@ -75,7 +137,7 @@ const Home = () => {
                             {
                                 allCats.map((category, index) => (
                                     <li key={index}
-                                        onClick={()=>{setActiveCategory(category.slug); setCurrentPage(1)}}
+                                        onClick={() => { setActiveCategory(category.slug); setCurrentPage(1) }}
                                         style={{
                                             padding: '6px',
                                             margin: '2px 0',
@@ -97,7 +159,7 @@ const Home = () => {
                     padding: '10px'
                 }}>
                     {
-                        products.map((product, index) => (
+                        dataByPage.map((product, index) => (
                             <Card key={index} data={product} functionToOpenModal={() => { onOpenModal(index) }} />
                         ))
                     }
@@ -115,7 +177,7 @@ const Home = () => {
             </div>
 
             <Modal open={open} onClose={onCloseModal} center>
-                <h2>Simple centered modal</h2>
+                <h2>{currentProduct.title}</h2>
             </Modal>
         </>
     )
