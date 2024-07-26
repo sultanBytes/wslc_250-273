@@ -1,10 +1,12 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Card from './Card';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
+import { myContext } from '../assests/ContextData';
+import Header from './Header';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -20,7 +22,6 @@ const Home = () => {
     const [userMax, setUserMax] = useState(1000);
     const [currentProduct, setCurrentProduct] = useState({});
     
-
     
     const onCloseModal = () => setOpen(false);
 
@@ -97,7 +98,7 @@ const Home = () => {
 
     return (
         <>
-
+            <Header/>
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 3fr',

@@ -10,6 +10,7 @@ import Gallery from './components/pages/Gallery';
 import RouteLayout from './RouteLayout';
 import Register from './components/pages/Register';
 import Error404 from './components/pages/Error404';
+import Content from './components/context/Context';
 
 // const routes = createBrowserRouter([
 //   {
@@ -34,24 +35,26 @@ import Error404 from './components/pages/Error404';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
-   <>
-    <Route path='/' element={<RouteLayout/>}>
-      <Route path='' element={<Home/>}/>
-      <Route path='about' element={<AboutUs/>}/>
-      <Route path='contact-us' element={<ContactUs/>}/>
-      <Route path='gallery' element={<Gallery/>}/>
-      {/* <Route path='register' element={<Register/>}/> */}
-    </Route>
-    <Route path='/register' element={<Register/>}/>
-    <Route path='*' element={<Error404/>}/>
-   </>
+    <>
+      <Route path='/' element={<RouteLayout />}>
+        <Route path='' element={<Home />} />
+        <Route path='about' element={<AboutUs />} />
+        <Route path='contact-us' element={<ContactUs />} />
+        <Route path='gallery' element={<Gallery />} />
+        {/* <Route path='register' element={<Register/>}/> */}
+      </Route>
+      <Route path='/register' element={<Register />} />
+      <Route path='*' element={<Error404 />} />
+    </>
   )
 )
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={routes}/>
+    <Content>
+      <RouterProvider router={routes} />
+      </Content>
   </React.StrictMode>
 );
 
