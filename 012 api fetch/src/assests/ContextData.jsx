@@ -7,21 +7,21 @@ const DataGlobal = ({children}) => {
 
     const [cart, setCart] = useState([]);
 
-   const getCartData = useCallback(()=>{
-    let cartData = Cookies.get('api-cart');
+//    const getCartData = useCallback(()=>{
+//     let cartData = Cookies.get('api-cart');
 
-        if(cartData === undefined){
-            cartData = [];
-        }else{
-            cartData = JSON.parse(cartData)
-        }
+//         if(cartData === undefined){
+//             cartData = [];
+//         }else{
+//             cartData = JSON.parse(cartData)
+//         }
     
-        setCart(cartData);
-   });
+//         setCart(cartData);
+//    });
 
-    useEffect(()=>{
-        getCartData();
-    },[]);
+//     useEffect(()=>{
+//         getCartData();
+//     },[]);
     
   return (
     <myContext.Provider value={{cart, setCart}}>

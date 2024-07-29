@@ -1,7 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { myContext } from '../assests/ContextData';
 
 
-const Card = ({data, functionToOpenModal}) => {
+const Card = ({data, functionToOpenModal, toastFn}) => {
+    const {cart, setCart} = useContext(myContext);
+
+    // console.log(cart, setCart);
+
+    const handleAddToCart = ()=>{
+        const index = cart.findIndex((item)=> item.data.id === data.id);
+
+        if(index === -1){
+            setCart([...cart, {data, quantity:1}]);
+        }else{
+            cart[index].quantity = cart[index].quantity + 1;
+            setCart([...cart]);
+        }
+
+        toastFn();
+    };
   return (
     <div style={{
         boxShadow:'0 0 3px 1px lightgray',
@@ -15,7 +32,7 @@ const Card = ({data, functionToOpenModal}) => {
                 cursor:'pointer'
             }}
             onClick={functionToOpenModal}
-
+            alt='img'
             />
         </div>
         <div>
@@ -43,7 +60,9 @@ const Card = ({data, functionToOpenModal}) => {
                 border:'1px solid black',
                 borderRadius:'4px',
                 cursor:'pointer'
-            }}>Add to cart</button>
+            }}
+            onClick={handleAddToCart}
+            >Add to cart</button>
         </div>
     </div>
   )

@@ -7,6 +7,8 @@ import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
 import { myContext } from '../assests/ContextData';
 import Header from './Header';
+import { ToastContainer, toast } from 'material-react-toastify';
+import 'material-react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -24,6 +26,7 @@ const Home = () => {
     
     
     const onCloseModal = () => setOpen(false);
+
 
     const getData = async () => {
         // let url = `https://dummyjson.com/products?limit=12&skip=${(currentPage - 1) * 12}`;
@@ -95,6 +98,10 @@ const Home = () => {
         setOpen(true);
     }
 
+    const showToast = ()=>{
+        toast('Product added to cart');
+    }
+
 
     return (
         <>
@@ -161,7 +168,7 @@ const Home = () => {
                 }}>
                     {
                         dataByPage.map((product, index) => (
-                            <Card key={index} data={product} functionToOpenModal={() => { onOpenModal(index) }} />
+                            <Card toastFn={showToast} key={index} data={product} functionToOpenModal={() => { onOpenModal(index) }} />
                         ))
                     }
                 </div>
@@ -180,6 +187,8 @@ const Home = () => {
             <Modal open={open} onClose={onCloseModal} center>
                 <h2>{currentProduct.title}</h2>
             </Modal>
+
+            <ToastContainer />
         </>
     )
 }
