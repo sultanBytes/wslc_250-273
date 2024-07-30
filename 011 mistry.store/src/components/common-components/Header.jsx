@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import logo from './../../assets/images/logo.svg';
 import { LiaLanguageSolid } from 'react-icons/lia';
 import { BiPhoneCall } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
 
@@ -51,19 +52,19 @@ const Header = () => {
           style={{ maxHeight: '100px' }}
           navbarScroll
         >
-          <Nav.Link href="#action1">Home</Nav.Link>
-          <Nav.Link href="#action2">PDF Catalog</Nav.Link>
-          <Nav.Link href="#action2" className='collection-nav'>Collections By Mistry.Store</Nav.Link>
-          <Nav.Link href="#action2">About Us</Nav.Link>
-          <Nav.Link href="#action2">Contact Us</Nav.Link>
+          <Link to="/">Home</Link>
+          <Link to="/pdf-cat">PDF Catalog</Link>
+          <Link to="/collection" className='collection-nav'>Collections By Mistry.Store</Link>
+          <Link href="#action2">About Us</Link>
+          <Link href="#action2">Contact Us</Link>
         </Nav>
         <Form className="d-flex align-items-center header-form">
-        <Nav.Link href="#action2">
+        <Link href="#action2">
             <LiaLanguageSolid/>
-        </Nav.Link>
-        <Nav.Link href="#action2">
+        </Link>
+        <Link href="#action2">
             <BiPhoneCall/>
-        </Nav.Link>
+        </Link>
           <Button className='themeBtn' type='button'>Login</Button>
         </Form>
       </Navbar.Collapse>

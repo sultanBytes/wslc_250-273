@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Header from '../common-components/Header';
 import innerImg from './../../assets/images/collections-no-bg.png';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -456,7 +455,7 @@ const Home = () => {
 
     return (
         <div>
-            <Header />
+            
             <div className='container introduction-banner'>
                 <h3>introducing</h3>
                 <div className='intro-inner'>
