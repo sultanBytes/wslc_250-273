@@ -17,9 +17,27 @@ export const mcqSlice = createSlice({
 
             const snapshot =await get(child(dbRef, 'mcqs'));
             if(snapshot.exists()){
+                // const a = snapshot.val();
+                // console.log(a);
+
+                
+
+                // const b = Object.keys(a);
+                // const alldata = [];
+                
+                // b.forEach((id)=>{
+                //     const c = a[id]
+                //     c.idd = id
+                //     alldata.push(c);
+                // })
+
+                // console.log(alldata);
+
               const data =  Object.entries(snapshot.val()).map(([id, user])=>({id, ...user}));
 
-              console.log(data);
+              console.log(data)
+
+            
             }
             else{
                 console.log("No data available");
