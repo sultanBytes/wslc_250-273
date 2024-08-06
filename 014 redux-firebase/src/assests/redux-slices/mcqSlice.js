@@ -33,10 +33,15 @@ export const mcqSlice = createSlice({
 
                 // console.log(alldata);
 
-              const data =  Object.entries(snapshot.val()).map(([id, user])=>({id, ...user}));
+              const data = await Object.entries(snapshot.val()).map(([id, user])=>({id, ...user}));
 
-              console.log(data)
+            //   data.forEach((item)=>{
+            //     state.value.push(item);
+            //   })
 
+            // console.log(state)
+              
+             
             
             }
             else{

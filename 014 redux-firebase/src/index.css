@@ -34,3 +34,17 @@ label{
   cursor: pointer;
   color: white;
 }
+
+table, tr,th,td{
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th,td{
+  padding: 10px;
+}
+
+.data-table{
+  background-color: #4CAF50;
+  padding: 20px;
+}
