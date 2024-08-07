@@ -48,3 +48,30 @@ th,td{
   background-color: #4CAF50;
   padding: 20px;
 }
+
+.react-responsive-modal-modal{
+  width: 600px;
+}
+
+.react-responsive-modal-modal form{
+  width: 100%;
+  padding: 30px;
+}
+.react-responsive-modal-modal form input,
+.react-responsive-modal-modal form select{
+  width: 100%;
+  padding: 10px;
+}
+.react-responsive-modal-modal button{
+  width: 100%;
+  padding: 10px;
+  margin-top: 14px;
+}
+.quizz-container{
+  text-align: center;
+  padding: 60px;
+}
+
+.quizz-container > button{
+  padding: 15px 60px;
+}

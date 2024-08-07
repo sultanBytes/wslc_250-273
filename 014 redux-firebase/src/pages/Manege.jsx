@@ -1,22 +1,20 @@
-import { child, get, getDatabase, ref, remove, set } from 'firebase/database';
+import { child, get, getDatabase, ref, remove, set, update } from 'firebase/database';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { firebaseApp } from '../assests/firebase-config/firebaseConfig';
 import { useDispatch, useSelector } from 'react-redux';
-import { getData } from '../assests/redux-slices/mcqSlice';
+import { setDetails } from '../assests/redux-slices/mcqSlice';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 
 const Manege = () => {
-    const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
     const [currntUpdataData, setUpdateData] = useState({});
 
-    // const mcqs = useSelector((state)=>state.mcqs.value);
-
-    // console.log(mcqs);
+    const data = useSelector((state)=> state.mcqs.value);
 
     const dispatch = useDispatch();
+
 
 
 
@@ -28,16 +26,15 @@ const Manege = () => {
         if (snapshot.exists()) {
 
             const responseData = await Object.entries(snapshot.val()).map(([id, user]) => ({ id, ...user }));
-            setData(responseData);
+            // setData(responseData);
+            dispatch(setDetails(responseData))
 
-            console.log(responseData);
+            // console.log(responseData);
         }
     }
 
 
     useEffect(() => {
-        //   dispatch(getData())
-
         getDataHere();
 
     }, [])
@@ -93,6 +90,25 @@ const Manege = () => {
         setOpen(true)
     }
 
+    const handleUpdateData = (e)=>{
+        e.preventDefault();
+
+        // console.log(currntUpdataData.id, currntUpdataData);
+        const {id, ...dataToUpdate} = currntUpdataData
+
+        const db = getDatabase(firebaseApp);
+        try{
+            const dataRef = ref(db, `mcqs/${currntUpdataData.id}`);
+
+        update(dataRef, dataToUpdate);
+        getDataHere();
+        setOpen(false)
+    }
+        catch(error){
+            console.log(error);
+            alert('something went wrong')
+        }
+    };
 
     return (
         <>
@@ -157,6 +173,9 @@ const Manege = () => {
                                         onClick={()=>{handleUpdate(index)}}
                                         >Edit</button>
                                         <button
+                                            style={{
+                                                cursor:'pointer'
+                                            }}
                                             value={mcq.id}
                                             onClick={handleDelete}
                                         >Delete</button>
@@ -167,9 +186,9 @@ const Manege = () => {
                     </table>
                 </div>
             </div>
-            <Modal open={open} onClose={()=>{setOpen(false)}} center>
+            <Modal classNames='update-model' open={open} onClose={()=>{setOpen(false)}} center>
                 <h2>Update MCQ</h2>
-                <form>
+                <form onSubmit={handleUpdateData}>
                         <label>Question:</label>
                         <input type="text" name="question" 
                         value={currntUpdataData.question}
