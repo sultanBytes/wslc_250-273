@@ -1,13 +1,43 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useDispatch } from 'react-redux';
 import { setUserDetails } from '../assests/redux-slices/userSlice';
+import { child, get, getDatabase, ref } from 'firebase/database';
+import { firebaseApp } from '../assests/firebase-config/firebaseConfig';
+import { setDetails } from '../assests/redux-slices/mcqSlice';
 
 const Home = () => {
-  const [open, setOpen] = useState(false);
+  const nav = useNavigate();
+
   const dispatch = useDispatch();
+
+
+
+
+    const getDataHere = async () => {
+        const db = getDatabase(firebaseApp);
+        const dbRef = ref(db);
+
+        const snapshot = await get(child(dbRef, 'mcqs'));
+        if (snapshot.exists()) {
+
+            const responseData = await Object.entries(snapshot.val()).map(([id, user]) => ({ id, ...user }));
+            // setData(responseData);
+            dispatch(setDetails(responseData))
+
+            // console.log(responseData);
+        }
+    }
+
+
+    useEffect(() => {
+        getDataHere();
+
+    }, [])
+
+  const [open, setOpen] = useState(false);
 
   const handleStartQuizz = (e)=>{
     e.preventDefault();
@@ -18,6 +48,7 @@ const Home = () => {
     }
 
     dispatch(setUserDetails(userDetails))
+    nav('/quizz')
     
   }
   return (

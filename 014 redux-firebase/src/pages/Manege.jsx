@@ -13,31 +13,7 @@ const Manege = () => {
 
     const data = useSelector((state)=> state.mcqs.value);
 
-    const dispatch = useDispatch();
-
-
-
-
-    const getDataHere = async () => {
-        const db = getDatabase(firebaseApp);
-        const dbRef = ref(db);
-
-        const snapshot = await get(child(dbRef, 'mcqs'));
-        if (snapshot.exists()) {
-
-            const responseData = await Object.entries(snapshot.val()).map(([id, user]) => ({ id, ...user }));
-            // setData(responseData);
-            dispatch(setDetails(responseData))
-
-            // console.log(responseData);
-        }
-    }
-
-
-    useEffect(() => {
-        getDataHere();
-
-    }, [])
+    
 
     const handleAddQuest = (e) => {
         e.preventDefault();
@@ -81,7 +57,7 @@ const Manege = () => {
         const db = getDatabase(firebaseApp);
         const mcqRef = ref(db, `mcqs/${idd}`)
         remove(mcqRef);
-        getDataHere();
+        // getDataHere();
     }
 
     const handleUpdate = (indexOfData)=>{
@@ -101,7 +77,7 @@ const Manege = () => {
             const dataRef = ref(db, `mcqs/${currntUpdataData.id}`);
 
         update(dataRef, dataToUpdate);
-        getDataHere();
+        // getDataHere();
         setOpen(false)
     }
         catch(error){

@@ -8,6 +8,7 @@ import { store } from './assests/redux-store/store';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
 import Manege from './pages/Manege';
+import Quizz from './pages/Quizz';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -19,6 +20,10 @@ const routes = createBrowserRouter([
   {
     path: '/manage',
     element:<Manege/>
+  },
+  {
+    path: '/quizz',
+    element:<Quizz/>
   }
 ]);
 

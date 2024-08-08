@@ -75,3 +75,23 @@ th,td{
 .quizz-container > button{
   padding: 15px 60px;
 }
+
+.quizz-container{
+  width: 800px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 20px;
+  text-align: left;
+}
+
+.quizz-container ul li label{
+  display: inline;
+  margin: 0 10px;
+}
+
+.buttons li{
+  padding: 6px 10px;
+  background-color: yellow;
+  margin: 2px 0;
+}
