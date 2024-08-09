@@ -9,18 +9,39 @@ const Quizz = () => {
     const data = useSelector((state)=> state.mcqs.value);
 
     useEffect(()=>{
-        const newArr = [];
-        data.forEach((mcq, index)=>{
-            const newObj = {
-                qNo : index + 1,
-                idCorrect: false
+        const newArr = data.map((item, index)=>(
+            {
+                qNo: index + 1,
+                selectedOption:''
             }
-
-            newArr.push(newObj);
-        })
+        ));
 
         setUserOptions(newArr);
-    },[data]);
+    },[data])
+
+    const selectedOptionUser = userOptions.find(option => option.qNo === qNumber)?.selectedOption;
+
+    const handleOptionChange = (QuestNo, slectedValue)=>{
+        const updatedOptions = userOptions.map(option => 
+            option.qNo === QuestNo ? {...option, selectedOption: slectedValue} : option
+        )
+
+        setUserOptions(updatedOptions);
+    }
+
+    // useEffect(()=>{
+    //     const newArr = [];
+    //     data.forEach((mcq, index)=>{
+    //         const newObj = {
+    //             qNo : index + 1,
+    //             idCorrect: false
+    //         }
+
+    //         newArr.push(newObj);
+    //     })
+
+    //     setUserOptions(newArr);
+    // },[data]);
 
    
   return (
@@ -32,33 +53,27 @@ const Quizz = () => {
         </div>
         <div className='quizz-container'>
             <div>
-                <ul className='buttons'>
-                    {
-                        data.map((item, index)=>(
-                            <li key={item.id}>Question no. {index + 1}</li>
-                        ))
-                    }
-                </ul>
+                
             </div>
             <div>
                 <h3>Q. no. {qNumber} : {data[qNumber - 1].question}</h3>
                 <ul>
-                    <li>
-                        Option A : <input type="radio" name='option' value={data[qNumber - 1].o1} />
-                        <label htmlFor="">{data[qNumber - 1].o1}</label>
-                    </li>
-                    <li>
-                        Option B : <input type="radio" name='option' value={data[qNumber - 1].o2} />
-                        <label htmlFor="">{data[qNumber - 1].o2}</label>
-                    </li>
-                    <li>
-                        Option C : <input type="radio" name='option' value={data[qNumber - 1].o3} />
-                        <label htmlFor="">{data[qNumber - 1].o3}</label>
-                    </li>
-                    <li>
-                        Option D : <input type="radio" name='option' value={data[qNumber - 1].o4} />
-                        <label htmlFor="">{data[qNumber - 1].o4}</label>
-                    </li>
+                    {
+                        ['o1', 'o2', 'o3', 'o4'].map((opt, i)=>(
+                            <li>
+                            Option {String.fromCharCode(65 + i)}
+                            <input 
+                            type="radio" 
+                            name={`option-${qNumber}`} 
+                            value={data[qNumber - 1][opt]} 
+                            checked={selectedOptionUser === data[qNumber - 1][opt]}
+                            onChange={()=> {handleOptionChange(qNumber, data[qNumber - 1][opt])}}
+                            />
+                            <label htmlFor="">{data[qNumber - 1][opt]}</label>
+                        </li>
+                        ))
+                    }
+                   
                 </ul>
 
                 <div style={{
@@ -69,6 +84,7 @@ const Quizz = () => {
                     disabled={(qNumber <= 1) ? true : false}
                     onClick={()=>{setQnumber(qNumber - 1)}}
                     >Prev</button>
+                    <button onClick={()=>{console.log(userOptions);}}>Submit</button>
                     <button style={{padding:'10px', cursor:'pointer',}}
                     disabled={(qNumber > data.length - 1)}
                     onClick={()=>{setQnumber(qNumber + 1)}}
